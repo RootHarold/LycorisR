@@ -3,6 +3,9 @@
 **LycorisR** is a lightweight recommendation algorithm framework based on [**LycorisNet**](https://github.com/RootHarold/Lycoris).
 
 # Features
+* Sequence-based recommendation.
+* Discover correlations between items.
+* Elegant and minimalist.
 
 # Installation
 The project is based on LycorisNet, and the installation of LycorisNet can be found [**here**](https://github.com/RootHarold/Lycoris#Installation).
