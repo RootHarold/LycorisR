@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='LycorisR',
-    version='1.0.0',
+    version='1.1.2',
     description="A lightweight recommendation algorithm framework based on LycorisNet.",
     author="RootHarold",
     author_email="rootharold@163.com",
