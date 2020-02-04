@@ -94,7 +94,7 @@ lre.most_similarity([0, 0, 0, 1])
 Get the embedding vectors of "D":
 
 ```python
-lre2.get_vector([1, 0, 0, 0])
+lre.get_vector([1, 0, 0, 0])
 ```
 
 *More examples will be released in the future.*
