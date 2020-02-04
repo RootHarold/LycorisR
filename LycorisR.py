@@ -36,7 +36,7 @@ class Recommender:
         if config is not None:
             self.__check_config(config)
             self.__config = config
-            self.__lie = Lycoris(capacity=config["capacity"], inputDim=config["dimension"] * config["sequence"],
+            self.__lie = Lycoris(capacity=config["capacity"], inputDim=config["dimension"] * (config["sequence"] - 1),
                                  outputDim=config["dimension"], mode="classify")
             self.__lie.setMutateOdds(0)
             self.__lie.preheat(config["nodes"], config["connections"], config["depths"])
@@ -63,7 +63,7 @@ class Recommender:
         data_copy = data.copy()
         batch = math.ceil(len(data) / float(self.__config["batch_size"]))
         remainder = len(data) % self.__config["batch_size"]
-        input_dim = self.__config["dimension"] * self.__config["sequence"]
+        input_dim = self.__config["dimension"] * (self.__config["sequence"] - 1)
 
         for i in range(self.__config["epoch"]):
             for j in range(remainder):
