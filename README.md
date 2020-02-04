@@ -48,6 +48,56 @@ evolution| Number of LycorisNet evolutions. | 0
 verbose| Whether to output intermediate information. | False
 
 # Usage
+LycorisR is a sequence-based recommendation framework. The input data is a sequential list of items, and the framework automatically explores correlations between these items. Here is a simple example with 8 groups of sequences: `A B -> C`, `A B -> D`, `B A -> C`, `B A -> D`, `C D -> A`, `C D -> B`, `D C -> A`, `D C -> B`.
+
+Import the dependent modules:
+
+```python
+from LycorisR import Recommender
+```
+
+Prepare the data:
+
+```python
+data = [[0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0], [0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0],
+        [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0],
+        [0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0], [0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0],
+        [0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1], [0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0]]
+```
+
+Prepare the configuration information and instantiate the **Recommender** object:
+
+```python
+conf = {"capacity": 64, "dimension": 4, "sequence": 3, "nodes": 1000, "connections": 30000, "depths": 8,
+        "batch_size": 8, "epoch": 16, "evolution": 8, "middle_layer": 4, "verbose": True}
+lre = Recommender(conf)
+```
+
+Embedding:
+
+```python
+lre.embed(data)
+```
+
+Inferring `B C -> ?`:
+
+```python
+lre.infer([0, 0, 1, 0, 0, 1, 0, 0])
+```
+
+Get the most similar items to "A":
+
+```python
+lre.most_similarity([0, 0, 0, 1])
+```
+
+Get the embedding vectors of "D":
+
+```python
+lre2.get_vector([1, 0, 0, 0])
+```
+
+*More examples will be released in the future.*
 
 # License
 LycorisR is released under the [LGPL-3.0](https://github.com/RootHarold/Lycoris/blob/master/LICENSE) license. By using, distributing, or contributing to this project, you agree to the terms and conditions of this license.
