@@ -60,7 +60,7 @@ class Recommender:
         else:
             flag = False
 
-        data_copy = data.copy()
+        data_copy = list(data).copy()
         batch = math.ceil(len(data) / float(self.__config["batch_size"]))
         remainder = len(data) % self.__config["batch_size"]
         input_dim = self.__config["dimension"] * (self.__config["sequence"] - 1)
