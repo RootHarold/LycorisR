@@ -65,10 +65,10 @@ class Recommender:
         remainder = len(data) % self.__config["batch_size"]
         input_dim = self.__config["dimension"] * (self.__config["sequence"] - 1)
 
-        for i in range(self.__config["epoch"]):
-            for j in range(remainder):
-                data_copy.append(random.choice(data))
+        for _ in range(remainder):
+            data_copy.append(random.choice(data))
 
+        for i in range(self.__config["epoch"]):
             random.shuffle(data_copy)
             temp1 = [None] * self.__config["batch_size"]
             temp2 = [None] * self.__config["batch_size"]
