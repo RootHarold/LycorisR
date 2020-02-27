@@ -65,7 +65,7 @@ class Recommender:
         input_dim = self.__config["dimension"] * (self.__config["sequence"] - 1)
 
         data_copy = list(data).copy()
-        data_copy.extend(random.sample(data, k=remainder))
+        data_copy.extend(random.choices(data, k=remainder))
 
         for i in range(self.__config["epoch"]):
             random.shuffle(data_copy)
