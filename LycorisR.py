@@ -263,7 +263,7 @@ class Recommender:
         """Returns the version information of Recommender."""
 
         lycoris_version = Lycoris.version()
-        return "LycorisR 1.3.2 By RootHarold." + "\nPowered By " + lycoris_version[:-15] + "."
+        return "LycorisR 1.4.2 By RootHarold." + "\nPowered By " + lycoris_version[:-15] + "."
 
     @staticmethod
     def __check_config(config):
