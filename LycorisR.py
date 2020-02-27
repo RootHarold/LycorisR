@@ -61,11 +61,12 @@ class Recommender:
             flag = False
 
         batch = math.ceil(len(data) / float(self.__config["batch_size"]))
-        remainder = self.__config["batch_size"] - len(data) % self.__config["batch_size"]
+        remainder = len(data) % self.__config["batch_size"]
         input_dim = self.__config["dimension"] * (self.__config["sequence"] - 1)
 
         data_copy = list(data).copy()
-        data_copy.extend(random.choices(data, k=remainder))
+        if remainder > 0:
+            data_copy.extend(random.choices(data, k=(self.__config["batch_size"] - remainder)))
 
         for i in range(self.__config["epoch"]):
             random.shuffle(data_copy)
