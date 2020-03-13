@@ -100,4 +100,4 @@ lre.get_vector([1, 0, 0, 0])
 *More examples will be released in the future.*
 
 # License
-LycorisR is released under the [LGPL-3.0](https://github.com/RootHarold/Lycoris/blob/master/LICENSE) license. By using, distributing, or contributing to this project, you agree to the terms and conditions of this license.
+LycorisR is released under the [LGPL-3.0](https://github.com/RootHarold/LycorisR/blob/master/LICENSE) license. By using, distributing, or contributing to this project, you agree to the terms and conditions of this license.
