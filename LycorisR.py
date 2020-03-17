@@ -23,7 +23,7 @@ class Recommender:
         __config: Store configuration information, including 11 configuration fields.
         __lie: The neural network based on LycorisNet.
         __mapping: Store the mapping between one-hot encoding and embedding vectors.
-        __flag: Avoid preheat operations being executed multiple times in LycorisNet.
+        __count: The counter for controlling "enrich()" of LycorisNet.
     """
 
     def __init__(self, config):
@@ -41,7 +41,7 @@ class Recommender:
             self.__lie.setMutateOdds(0)
             self.__lie.preheat(config["nodes"], config["connections"], config["depths"])
             self.__mapping = {}
-            self.__flag = True
+            self.__count = 0
 
     def embed(self, data):
         """Generate the mapping between one-hot encoding and embedding vectors.
@@ -53,12 +53,6 @@ class Recommender:
 
         if np.array(data).ndim == 1:
             data = [data]
-
-        flag = True
-        if self.__flag:
-            self.__flag = False
-        else:
-            flag = False
 
         batch = math.ceil(len(data) / float(self.__config["batch_size"]))
         remainder = len(data) % self.__config["batch_size"]
@@ -74,22 +68,21 @@ class Recommender:
             temp2 = [None] * self.__config["batch_size"]
             pos = 0
 
-            for j in range(batch):
+            for _ in range(batch):
                 for k in range(self.__config["batch_size"]):
                     temp1[k] = data_copy[pos][:input_dim]
                     temp2[k] = data_copy[pos][input_dim:]
                     pos = pos + 1
 
-                if flag:
-                    if i * batch + j == self.__config["evolution"]:
-                        self.__lie.enrich()
+                if self.__count == self.__config["evolution"]:
+                    self.__lie.enrich()
 
-                    if i * batch + j < self.__config["evolution"]:
-                        self.__lie.fitAll(temp1, temp2)
-                    else:
-                        self.__lie.fit(temp1, temp2)
+                if self.__count < self.__config["evolution"]:
+                    self.__lie.fitAll(temp1, temp2)
                 else:
                     self.__lie.fit(temp1, temp2)
+
+                self.__count = self.__count + 1
 
             if self.__config["verbose"]:
                 logging.info("Epoch " + str(i + 1) + " : " + str(self.__lie.getLoss()))
@@ -208,7 +201,7 @@ class Recommender:
         """
 
         l_r = Recommender(None)
-        l_r.__flag = False
+        l_r.__count = 0
 
         l_r.__lie = loadModel(path1, capacity=1)
 
