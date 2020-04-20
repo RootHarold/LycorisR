@@ -38,7 +38,6 @@ class Recommender:
             self.__config = config
             self.__lie = Lycoris(capacity=config["capacity"], inputDim=config["dimension"] * (config["sequence"] - 1),
                                  outputDim=config["dimension"], mode="classify")
-            self.__lie.setMutateOdds(0)
             self.__lie.preheat(config["nodes"], config["connections"], config["depths"])
             self.__mapping = {}
             self.__count = 0
@@ -203,8 +202,6 @@ class Recommender:
         l_r = Recommender(None)
         l_r.__count = 0
 
-        l_r.__lie = loadModel(path1, capacity=1)
-
         f = open(path2, 'r')
         json_info = f.read()
         f.close()
@@ -216,6 +213,9 @@ class Recommender:
         config.pop("mapping")
         l_r.__check_config(config)
         l_r.__config = config
+
+        l_r.__lie = loadModel(path1, capacity=config["capacity"])
+
         if l_r.__config["verbose"]:
             logging.info("Model imported successfully.")
 
