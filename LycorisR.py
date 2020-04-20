@@ -38,6 +38,7 @@ class Recommender:
             self.__config = config
             self.__lie = Lycoris(capacity=config["capacity"], inputDim=config["dimension"] * (config["sequence"] - 1),
                                  outputDim=config["dimension"], mode="classify")
+            self.__lie.setMutateOdds(0)
             self.__lie.preheat(config["nodes"], config["connections"], config["depths"])
             self.__mapping = {}
             self.__count = 0
@@ -75,12 +76,8 @@ class Recommender:
 
                 if self.__count == self.__config["evolution"]:
                     self.__lie.enrich()
-                    self.__lie.fit(temp1, temp2)
-                elif self.__count < self.__config["evolution"]:
-                    self.__lie.evolve(temp1, temp2)
-                else:
-                    self.__lie.fit(temp1, temp2)
 
+                self.__lie.fit(temp1, temp2)
                 self.__count = self.__count + 1
 
             if self.__config["verbose"]:
@@ -202,6 +199,8 @@ class Recommender:
         l_r = Recommender(None)
         l_r.__count = 0
 
+        l_r.__lie = loadModel(path1, capacity=1)
+
         f = open(path2, 'r')
         json_info = f.read()
         f.close()
@@ -211,11 +210,10 @@ class Recommender:
         for key, item in config["mapping"].items():
             l_r.__mapping[eval(key)] = item
         config.pop("mapping")
+        config["capacity"] = 1
+        config["evolution"] = 0
         l_r.__check_config(config)
         l_r.__config = config
-
-        l_r.__lie = loadModel(path1, capacity=config["capacity"])
-
         if l_r.__config["verbose"]:
             logging.info("Model imported successfully.")
 
@@ -254,7 +252,7 @@ class Recommender:
         """Returns the version information of Recommender."""
 
         lycoris_version = Lycoris.version()
-        return "LycorisR 1.7.3 By RootHarold." + "\nPowered By " + lycoris_version[:-15] + "."
+        return "LycorisR 1.6.3 By RootHarold." + "\nPowered By " + lycoris_version[:-15] + "."
 
     @staticmethod
     def __check_config(config):
