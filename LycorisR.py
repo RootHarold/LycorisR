@@ -210,8 +210,6 @@ class Recommender:
         for key, item in config["mapping"].items():
             l_r.__mapping[eval(key)] = item
         config.pop("mapping")
-        config["capacity"] = 1
-        config["evolution"] = 0
         l_r.__check_config(config)
         l_r.__config = config
         if l_r.__config["verbose"]:
